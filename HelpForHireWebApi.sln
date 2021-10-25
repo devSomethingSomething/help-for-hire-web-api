@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpForHireWebApi", "HelpForHireWebApi\HelpForHireWebApi.csproj", "{5D189F22-5659-4666-AB9D-D8A5A64B3CDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D189F22-5659-4666-AB9D-D8A5A64B3CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D189F22-5659-4666-AB9D-D8A5A64B3CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D189F22-5659-4666-AB9D-D8A5A64B3CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D189F22-5659-4666-AB9D-D8A5A64B3CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {535C05BF-5B6F-4C67-AA23-CE8019867F1C}
+	EndGlobalSection
+EndGlobal
