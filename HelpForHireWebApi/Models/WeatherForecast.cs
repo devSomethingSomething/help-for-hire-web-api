@@ -1,6 +1,6 @@
 using System;
 
-namespace HelpForHireWebApi
+namespace HelpForHireWebApi.Models
 {
     public class WeatherForecast
     {
