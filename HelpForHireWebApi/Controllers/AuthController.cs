@@ -20,12 +20,33 @@ namespace HelpForHireWebApi.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<ActionResult<Auth>> GetAuth(string id)
+        {
+            DocumentReference documentReference = FirestoreManager.Db.Collection("Auth").Document(id);
+
+            DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
+
+            if (documentSnapshot.Exists)
+            {
+                Auth auth = documentSnapshot.ConvertTo<Auth>();
+
+                auth.Id = id;
+
+                return Ok(auth);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostAuth(Auth auth)
         {
-            DocumentReference doc = FirestoreManager.Db.Collection("Auth").Document(auth.Id);
+            DocumentReference documentReference = FirestoreManager.Db.Collection("Auth").Document(auth.Id);
 
-            await doc.SetAsync(auth);
+            await documentReference.SetAsync(auth);
 
             return CreatedAtAction(nameof(PostAuth), auth);
         }

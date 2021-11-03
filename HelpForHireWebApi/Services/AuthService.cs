@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace HelpForHireWebApi.Services
 {
+    [Obsolete("Will be replaced soon")]
     public static class AuthService
     {
         private static List<Auth> auths;
