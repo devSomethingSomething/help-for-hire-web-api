@@ -14,23 +14,24 @@ namespace HelpForHireWebApi.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private FirestoreDb firestoreDb;
+        private FirestoreDb db;
+
+        private const string PROJECT_ID = "help-for-hire";
 
         public AuthController()
         {
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS",
                 "C:/Users/busin/Documents/GitHub/help-for-hire-web-api/HelpForHireWebApi/Keys/help-for-hire-firebase-adminsdk-ejiad-ad5b9459ba.json");
 
-            firestoreDb = FirestoreDb.Create("help-for-hire");
+            db = FirestoreDb.Create(PROJECT_ID);
         }
 
         [HttpPost]
-        public IActionResult PostAuth(Auth auth)
+        public async Task<IActionResult> PostAuth(Auth auth)
         {
-            CollectionReference collectionReference = firestoreDb.Collection("Auth");
+            DocumentReference doc = db.Collection("Auth").Document(auth.Id);
 
-            DocumentReference documentReference = collectionReference.AddAsync(auth)
-                .GetAwaiter().GetResult();
+            await doc.SetAsync(auth);
 
             return CreatedAtAction(nameof(PostAuth), auth);
         }
