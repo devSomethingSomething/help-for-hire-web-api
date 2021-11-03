@@ -1,4 +1,5 @@
-﻿using HelpForHireWebApi.Models;
+﻿using Google.Cloud.Firestore;
+using HelpForHireWebApi.Models;
 using HelpForHireWebApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,22 +14,25 @@ namespace HelpForHireWebApi.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private FirestoreDb firestoreDb;
+
         public AuthController()
         {
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS",
+                "C:/Users/busin/Documents/GitHub/help-for-hire-web-api/HelpForHireWebApi/Keys/help-for-hire-firebase-adminsdk-ejiad-ad5b9459ba.json");
 
+            firestoreDb = FirestoreDb.Create("help-for-hire");
         }
 
-        [HttpGet]
-        public ActionResult<Auth> GetAuth(string id)
+        [HttpPost]
+        public IActionResult PostAuth(Auth auth)
         {
-            Auth auth = AuthService.GetAuth(id);
+            CollectionReference collectionReference = firestoreDb.Collection("Auth");
 
-            if (auth == null)
-            {
-                return NotFound();
-            }
+            DocumentReference documentReference = collectionReference.AddAsync(auth)
+                .GetAwaiter().GetResult();
 
-            return auth;
+            return CreatedAtAction(nameof(PostAuth), auth);
         }
     }
 }
