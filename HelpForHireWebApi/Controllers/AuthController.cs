@@ -35,5 +35,20 @@ namespace HelpForHireWebApi.Controllers
 
             return CreatedAtAction(nameof(PostAuth), auth);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAuths()
+        {
+            QuerySnapshot snapshot = await db.Collection("Auth").GetSnapshotAsync();
+
+            IReadOnlyList<DocumentSnapshot> documents = snapshot.Documents;
+
+            foreach (DocumentSnapshot document in documents)
+            {
+                await document.Reference.DeleteAsync();
+            }
+
+            return NoContent();
+        }
     }
 }
