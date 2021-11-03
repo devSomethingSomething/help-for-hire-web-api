@@ -1,0 +1,7 @@
+1. Put keys in this folder
+
+2. Change filepath for the relevant manager
+
+Keys are usually .json files
+
+Make sure that the .json extension is included in the filepath

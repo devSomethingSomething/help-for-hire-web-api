@@ -1,4 +1,5 @@
 ﻿using Google.Cloud.Firestore;
+using HelpForHireWebApi.Managers;
 using HelpForHireWebApi.Models;
 using HelpForHireWebApi.Services;
 using Microsoft.AspNetCore.Http;
@@ -14,22 +15,15 @@ namespace HelpForHireWebApi.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private FirestoreDb db;
-
-        private const string PROJECT_ID = "help-for-hire";
-
         public AuthController()
         {
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS",
-                "C:/Users/busin/Documents/GitHub/help-for-hire-web-api/HelpForHireWebApi/Keys/help-for-hire-firebase-adminsdk-ejiad-ad5b9459ba.json");
 
-            db = FirestoreDb.Create(PROJECT_ID);
         }
 
         [HttpPost]
         public async Task<IActionResult> PostAuth(Auth auth)
         {
-            DocumentReference doc = db.Collection("Auth").Document(auth.Id);
+            DocumentReference doc = FirestoreManager.Db.Collection("Auth").Document(auth.Id);
 
             await doc.SetAsync(auth);
 
@@ -39,7 +33,7 @@ namespace HelpForHireWebApi.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteAuths()
         {
-            QuerySnapshot snapshot = await db.Collection("Auth").GetSnapshotAsync();
+            QuerySnapshot snapshot = await FirestoreManager.Db.Collection("Auth").GetSnapshotAsync();
 
             IReadOnlyList<DocumentSnapshot> documents = snapshot.Documents;
 
