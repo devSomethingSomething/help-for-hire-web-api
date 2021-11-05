@@ -332,3 +332,6 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+
+# Hide private key
+HelpForHireWebApi/Keys/help-for-hire-firebase-adminsdk-ejiad-ad5b9459ba.json
