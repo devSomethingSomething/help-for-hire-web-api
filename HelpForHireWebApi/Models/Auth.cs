@@ -16,6 +16,7 @@ namespace HelpForHireWebApi.Models
 
         [Required]
         [FirestoreProperty]
+        [StringLength(24, MinimumLength = 8)]
         public string Password { get; set; }
     }
 }

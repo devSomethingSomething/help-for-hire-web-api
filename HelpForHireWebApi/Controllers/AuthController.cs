@@ -42,7 +42,7 @@ namespace HelpForHireWebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAuth(Auth auth)
+        public async Task<ActionResult> PostAuth(Auth auth)
         {
             DocumentReference documentReference = FirestoreManager.Db.Collection("Auth").Document(auth.Id);
 
@@ -50,20 +50,7 @@ namespace HelpForHireWebApi.Controllers
 
             return CreatedAtAction(nameof(PostAuth), auth);
         }
-
-        [HttpDelete]
-        public async Task<IActionResult> DeleteAuths()
-        {
-            QuerySnapshot snapshot = await FirestoreManager.Db.Collection("Auth").GetSnapshotAsync();
-
-            IReadOnlyList<DocumentSnapshot> documents = snapshot.Documents;
-
-            foreach (DocumentSnapshot document in documents)
-            {
-                await document.Reference.DeleteAsync();
-            }
-
-            return NoContent();
-        }
+        
+        // Need put method here
     }
 }
