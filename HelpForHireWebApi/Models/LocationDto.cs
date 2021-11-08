@@ -8,11 +8,8 @@ using System.Threading.Tasks;
 namespace HelpForHireWebApi.Models
 {
     [FirestoreData]
-    public class Location
+    public class LocationDto
     {
-        [Required]
-        public string LocationId { get; set; }
-
         [Required]
         [FirestoreProperty]
         public string Province { get; set; }
