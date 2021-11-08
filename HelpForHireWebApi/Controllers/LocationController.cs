@@ -58,5 +58,33 @@ namespace HelpForHireWebApi.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("/api/[controller]/all")]
+        public async Task<ActionResult<List<Location>>> GetLocations()
+        {
+            List<Location> locations = new List<Location>();
+
+            Query query = FirestoreManager.Db.Collection(COLLECTION);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                Location location = documentSnapshot.ConvertTo<Location>();
+
+                location.LocationId = documentSnapshot.Id;
+
+                locations.Add(location);
+            }
+
+            if (locations.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(locations);
+        }
+
+        // Will add put and delete soon
     }
 }
