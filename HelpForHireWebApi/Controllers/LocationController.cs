@@ -36,5 +36,27 @@ namespace HelpForHireWebApi.Controllers
 
             return CreatedAtAction(nameof(PostLocation), locationDto);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<Location>> GetLocation(string id)
+        {
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
+
+            DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
+
+            if (documentSnapshot.Exists)
+            {
+                Location location = documentSnapshot.ConvertTo<Location>();
+
+                location.LocationId = id;
+
+                return Ok(location);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }
