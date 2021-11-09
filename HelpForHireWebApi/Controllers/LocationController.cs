@@ -116,5 +116,32 @@ namespace HelpForHireWebApi.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("/api/[controller]/cities")]
+        public async Task<ActionResult<List<Location>>> GetCitiesInProvince(string province)
+        {
+            List<Location> locations = new List<Location>();
+
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("Province", province);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                Location location = documentSnapshot.ConvertTo<Location>();
+
+                location.LocationId = documentSnapshot.Id;
+
+                locations.Add(location);
+            }
+
+            if (locations.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(locations);
+        }
     }
 }
