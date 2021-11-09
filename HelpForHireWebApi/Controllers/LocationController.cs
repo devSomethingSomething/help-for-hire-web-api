@@ -85,6 +85,20 @@ namespace HelpForHireWebApi.Controllers
             return Ok(locations);
         }
 
-        // Will add put and delete soon
+        [HttpPut]
+        public async Task<ActionResult> PutLocation(string id, LocationDto locationDto)
+        {
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
+
+            if (documentReference is null)
+            {
+                return NotFound();
+            }
+
+            await documentReference.SetAsync(locationDto, SetOptions.MergeAll);
+
+            return NoContent();
+        }
     }
 }
