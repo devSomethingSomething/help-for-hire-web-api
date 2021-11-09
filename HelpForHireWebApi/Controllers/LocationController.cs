@@ -91,12 +91,28 @@ namespace HelpForHireWebApi.Controllers
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
 
-            if (documentReference is null)
+            if (documentReference == null)
             {
                 return NotFound();
             }
 
             await documentReference.SetAsync(locationDto, SetOptions.MergeAll);
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteLocation(string id)
+        {
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
+
+            if (documentReference == null)
+            {
+                return NotFound();
+            }
+
+            await documentReference.DeleteAsync();
 
             return NoContent();
         }
