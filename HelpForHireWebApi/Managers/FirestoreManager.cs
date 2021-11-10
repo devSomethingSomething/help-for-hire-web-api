@@ -15,7 +15,7 @@ namespace HelpForHireWebApi.Managers
         static FirestoreManager()
         {
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS",
-                "C:/Users/busin/Documents/GitHub/help-for-hire-web-api/HelpForHireWebApi/Keys/help-for-hire-firebase-adminsdk-ejiad-ad5b9459ba.json");
+                "D:/school/WIL/help-for-hire-firebase-adminsdk-ejiad-ad5b9459ba.json");
 
             Db = FirestoreDb.Create(PROJECT_ID);
         }
