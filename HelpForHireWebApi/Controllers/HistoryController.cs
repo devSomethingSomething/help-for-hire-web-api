@@ -116,5 +116,32 @@ namespace HelpForHireWebApi.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("/api/[controller]/user")]
+        public async Task<ActionResult<List<History>>> GetHistoryByUser(string userId)
+        {
+            List<History> histories = new List<History>();
+
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("UserId", userId);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                History history = documentSnapshot.ConvertTo<History>();
+
+                history.HistoryId = documentSnapshot.Id;
+
+                histories.Add(history);
+            }
+
+            if (histories.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(histories);
+        }
     }
 }
