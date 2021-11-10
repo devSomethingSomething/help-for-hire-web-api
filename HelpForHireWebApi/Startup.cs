@@ -30,6 +30,7 @@ namespace HelpForHireWebApi
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
+                c.CustomSchemaIds(t => t.FullName);
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HelpForHireWebApi", Version = "v1" });
             });
         }
@@ -41,7 +42,11 @@ namespace HelpForHireWebApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HelpForHireWebApi v1"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.DefaultModelsExpandDepth(-1);
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "HelpForHireWebApi v1");
+                });
             }
 
             app.UseHttpsRedirection();
