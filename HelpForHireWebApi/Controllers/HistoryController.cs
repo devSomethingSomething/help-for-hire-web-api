@@ -1,6 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using HelpForHireWebApi.Managers;
 using HelpForHireWebApi.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,23 +12,45 @@ namespace HelpForHireWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class HistoryController : Controller
+    public class HistoryController : ControllerBase
     {
-       public HistoryController()
+        private const string COLLECTION = "History";
+
+        public HistoryController()
         {
 
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<History>> PostHistory(HistoryDto historyDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            CollectionReference collectionReference = FirestoreManager.Db
+                .Collection(COLLECTION);
+
+            await collectionReference.Document().SetAsync(historyDto);
+
+            return CreatedAtAction(nameof(PostHistory), historyDto);
         }
 
         [HttpGet]
         public async Task<ActionResult<History>> GetHistory(string id)
         {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("History").Document(id);
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
+
             DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
 
-            if(documentSnapshot.Exists)
+            if (documentSnapshot.Exists)
             {
                 History history = documentSnapshot.ConvertTo<History>();
-                history.Id = id;
+
+                history.HistoryId = id;
+
                 return Ok(history);
             }
             else
@@ -36,38 +59,53 @@ namespace HelpForHireWebApi.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult<History>> PostHistory(History history)
+        [HttpGet("/api/[controller]/all")]
+        public async Task<ActionResult<List<History>>> GetHistories()
         {
-            if(!ModelState.IsValid)
+            List<History> histories = new List<History>();
+
+            Query query = FirestoreManager.Db.Collection(COLLECTION);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
             {
-                return BadRequest(ModelState);
+                History history = documentSnapshot.ConvertTo<History>();
+
+                history.HistoryId = documentSnapshot.Id;
+
+                histories.Add(history);
             }
-            CollectionReference collectionReference = FirestoreManager.Db.Collection("History");
 
-            await collectionReference.Document().SetAsync(history);
-
-            return CreatedAtAction(nameof(PostHistory), history);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> PutHistory(string id, History history)
-        {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("History").Document(id);
-
-            if(documentReference == null)
+            if (histories.Count == 0)
             {
                 return NotFound();
             }
 
-            await documentReference.SetAsync(history, SetOptions.MergeAll);
+            return Ok(histories);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> PutHistory(string id, HistoryDto historyDto)
+        {
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
+
+            if (documentReference == null)
+            {
+                return NotFound();
+            }
+
+            await documentReference.SetAsync(historyDto, SetOptions.MergeAll);
+
             return NoContent();
         }
 
         [HttpDelete]
         public async Task<ActionResult> DeleteHistory(string id)
         {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("History").Document(id);
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
 
             if (documentReference == null)
             {
@@ -75,6 +113,7 @@ namespace HelpForHireWebApi.Controllers
             }
 
             await documentReference.DeleteAsync();
+
             return NoContent();
         }
     }

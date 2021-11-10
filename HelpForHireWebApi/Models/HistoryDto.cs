@@ -8,11 +8,8 @@ using System.Threading.Tasks;
 namespace HelpForHireWebApi.Models
 {
     [FirestoreData]
-    public class History
+    public class HistoryDto
     {
-        [Required]
-        public string HistoryId { get; set; }
-
         [Required]
         [FirestoreProperty]
         [StringLength(256)]

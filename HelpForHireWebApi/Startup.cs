@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,7 @@ namespace HelpForHireWebApi
                 app.UseSwaggerUI(c =>
                 {
                     c.DefaultModelsExpandDepth(-1);
+                    c.DocExpansion(DocExpansion.None);
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "HelpForHireWebApi v1");
                 });
             }
