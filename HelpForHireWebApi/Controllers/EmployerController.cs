@@ -12,17 +12,17 @@ namespace HelpForHireWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LocationController : ControllerBase
+    public class EmployerController : ControllerBase
     {
-        private const string COLLECTION = "Location";
+        private const string COLLECTION = "Employer";
 
-        public LocationController()
+        public EmployerController()
         {
 
         }
 
         [HttpPost]
-        public async Task<ActionResult<Location>> PostLocation(LocationDto locationDto)
+        public async Task<ActionResult<Employer>> PostEmployer(Employer employer)
         {
             if (!ModelState.IsValid)
             {
@@ -32,13 +32,13 @@ namespace HelpForHireWebApi.Controllers
             CollectionReference collectionReference = FirestoreManager.Db
                 .Collection(COLLECTION);
 
-            await collectionReference.Document().SetAsync(locationDto);
+            await collectionReference.Document(employer.UserId).SetAsync(employer);
 
-            return CreatedAtAction(nameof(PostLocation), locationDto);
+            return CreatedAtAction(nameof(PostEmployer), employer);
         }
 
         [HttpGet]
-        public async Task<ActionResult<Location>> GetLocation(string id)
+        public async Task<ActionResult<Employer>> GetEmployer(string id)
         {
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
@@ -47,11 +47,11 @@ namespace HelpForHireWebApi.Controllers
 
             if (documentSnapshot.Exists)
             {
-                Location location = documentSnapshot.ConvertTo<Location>();
+                Employer employer = documentSnapshot.ConvertTo<Employer>();
 
-                location.LocationId = id;
+                employer.UserId = id;
 
-                return Ok(location);
+                return Ok(employer);
             }
             else
             {
@@ -60,9 +60,9 @@ namespace HelpForHireWebApi.Controllers
         }
 
         [HttpGet("/api/[controller]/all")]
-        public async Task<ActionResult<List<Location>>> GetLocations()
+        public async Task<ActionResult<List<Employer>>> GetEmployers()
         {
-            List<Location> locations = new List<Location>();
+            List<Employer> employers = new List<Employer>();
 
             Query query = FirestoreManager.Db.Collection(COLLECTION);
 
@@ -70,23 +70,23 @@ namespace HelpForHireWebApi.Controllers
 
             foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
             {
-                Location location = documentSnapshot.ConvertTo<Location>();
+                Employer employer = documentSnapshot.ConvertTo<Employer>();
 
-                location.LocationId = documentSnapshot.Id;
+                employer.UserId = documentSnapshot.Id;
 
-                locations.Add(location);
+                employers.Add(employer);
             }
 
-            if (locations.Count == 0)
+            if (employers.Count == 0)
             {
                 return NotFound();
             }
 
-            return Ok(locations);
+            return Ok(employers);
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutLocation(string id, LocationDto locationDto)
+        public async Task<ActionResult> PutEmployer(string id, EmployerDto employerDto)
         {
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
@@ -96,13 +96,13 @@ namespace HelpForHireWebApi.Controllers
                 return NotFound();
             }
 
-            await documentReference.SetAsync(locationDto, SetOptions.MergeAll);
+            await documentReference.SetAsync(employerDto, SetOptions.MergeAll);
 
             return NoContent();
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteLocation(string id)
+        public async Task<ActionResult> DeleteEmployer(string id)
         {
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
@@ -118,30 +118,30 @@ namespace HelpForHireWebApi.Controllers
         }
 
         [HttpGet("/api/[controller]/cities")]
-        public async Task<ActionResult<List<Location>>> GetCitiesInProvince(string province)
+        public async Task<ActionResult<List<Employer>>> GetEmployersInCity(string locationId)
         {
-            List<Location> locations = new List<Location>();
+            List<Employer> employers = new List<Employer>();
 
             Query query = FirestoreManager.Db.Collection(COLLECTION)
-                .WhereEqualTo("Province", province);
+                .WhereEqualTo("LocationId", locationId);
 
             QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
 
             foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
             {
-                Location location = documentSnapshot.ConvertTo<Location>();
+                Employer employer = documentSnapshot.ConvertTo<Employer>();
 
-                location.LocationId = documentSnapshot.Id;
+                employer.UserId = documentSnapshot.Id;
 
-                locations.Add(location);
+                employers.Add(employer);
             }
 
-            if (locations.Count == 0)
+            if (employers.Count == 0)
             {
                 return NotFound();
             }
 
-            return Ok(locations);
+            return Ok(employers);
         }
     }
 }
