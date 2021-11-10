@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace HelpForHireWebApi.Models
 {
     [FirestoreData]
-    public class Employer : User
+    public class EmployerDto : UserDto
     {
 
     }
