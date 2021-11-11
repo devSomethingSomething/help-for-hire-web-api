@@ -1,7 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using HelpForHireWebApi.Managers;
 using HelpForHireWebApi.Models;
-using HelpForHireWebApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

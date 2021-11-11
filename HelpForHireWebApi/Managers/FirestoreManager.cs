@@ -1,6 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,10 @@ namespace HelpForHireWebApi.Managers
         static FirestoreManager()
         {
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS",
-                "D:/school/WIL/help-for-hire-firebase-adminsdk-ejiad-ad5b9459ba.json");
+                Path.Combine(
+                    Environment.CurrentDirectory, 
+                    "Keys/", 
+                    "help-for-hire-firebase-adminsdk-ejiad-ad5b9459ba.json"));
 
             Db = FirestoreDb.Create(PROJECT_ID);
         }
