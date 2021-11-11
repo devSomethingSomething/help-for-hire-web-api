@@ -10,19 +10,48 @@ using System.Threading.Tasks;
 
 namespace HelpForHireWebApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class JobController : ControllerBase
     {
+        private const string COLLECTION = "Job";
+
         public JobController()
         {
 
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Job>> GetJob(int id)
+        [HttpPost]
+        public async Task<ActionResult<Job>> PostJob(JobDto jobDto)
         {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("Job").Document(id.ToString());
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("Title", jobDto.Title);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            if (querySnapshot.Documents.Count != 0)
+            {
+                return BadRequest("Duplicate item detected");
+            }
+
+            CollectionReference collectionReference = FirestoreManager.Db
+                .Collection(COLLECTION);
+
+            await collectionReference.Document().SetAsync(jobDto);
+
+            return CreatedAtAction(nameof(PostJob), jobDto);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<Job>> GetJob(string id)
+        {
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
 
             DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
 
@@ -30,7 +59,7 @@ namespace HelpForHireWebApi.Controllers
             {
                 Job job = documentSnapshot.ConvertTo<Job>();
 
-                job.Id = id;
+                job.JobId = id;
 
                 return Ok(job);
             }
@@ -40,49 +69,80 @@ namespace HelpForHireWebApi.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> PostJob(Job job)
+        [HttpGet("/api/[controller]/all")]
+        public async Task<ActionResult<List<Job>>> GetJobs()
         {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("Job").Document((job.Id).ToString());
+            List<Job> jobs = new List<Job>();
 
-            await documentReference.SetAsync(job);
+            Query query = FirestoreManager.Db.Collection(COLLECTION);
 
-            return CreatedAtAction(nameof(PostJob), job);
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                Job job = documentSnapshot.ConvertTo<Job>();
+
+                job.JobId = documentSnapshot.Id;
+
+                jobs.Add(job);
+            }
+
+            if (jobs.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(jobs);
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutJob(int id, Job job)
+        public async Task<ActionResult> PutJob(string id, JobDto jobDto)
         {
-           
-            if (id != job.Id)
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("Title", jobDto.Title);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            if (querySnapshot.Documents.Count != 0)
             {
-                return BadRequest();
+                return BadRequest("Duplicate item detected");
             }
 
-            DocumentReference documentReference = FirestoreManager.Db.Collection("Job").Document(id.ToString());
-         
-            if (documentReference is null)
-            {        
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
+
+            DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
+
+            if (documentSnapshot.Exists)
+            {
+                await documentReference.SetAsync(jobDto, SetOptions.MergeAll);
+
+                return NoContent();
+            }
+            else
+            {
                 return NotFound();
             }
-
-            await documentReference.SetAsync(job);
-
-            return NoContent();
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteJob(int id)
+        public async Task<ActionResult> DeleteJob(string id)
         {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("Job").Document(id.ToString());
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
 
-            if (documentReference == null)
+            DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
+
+            if (documentSnapshot.Exists)
+            {
+                await documentReference.DeleteAsync();
+
+                return NoContent();
+            }
+            else
             {
                 return NotFound();
             }
-
-            await documentReference.DeleteAsync();
-            return NoContent();
         }
     }
 }
