@@ -10,57 +10,119 @@ using System.Threading.Tasks;
 
 namespace HelpForHireWebApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-
+    [Route("api/[controller]")]
     public class WorkerController : ControllerBase
     {
+        private const string COLLECTION = "Worker";
 
         public WorkerController()
         {
 
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Worker>> getWorker(string UserId)
+        [HttpPost]
+        public async Task<ActionResult<Worker>> PostWorker(Worker worker)
         {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("Worker").Document(UserId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            CollectionReference collectionReference = FirestoreManager.Db
+                    .Collection(COLLECTION);
+
+            await collectionReference.Document(worker.UserId).SetAsync(worker);
+
+            return CreatedAtAction(nameof(PostWorker), worker);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<Worker>> GetWorker(string id)
+        {
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
+
             DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
 
-            if(documentSnapshot.Exists){
+            if (documentSnapshot.Exists)
+            {
                 Worker worker = documentSnapshot.ConvertTo<Worker>();
+
+                worker.UserId = id;
+
                 return Ok(worker);
             }
             else
             {
                 return NotFound();
-            } 
+            }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> postWorker(Worker worker)
+        [HttpGet("/api/[controller]/all")]
+        public async Task<ActionResult<List<Worker>>> GetWorkers()
         {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("Worker").Document(worker.UserId);
+            List<Worker> workers = new List<Worker>();
 
-            await documentReference.SetAsync(worker);
+            Query query = FirestoreManager.Db.Collection(COLLECTION);
 
-            return CreatedAtAction(nameof(postWorker), worker);
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                Worker worker = documentSnapshot.ConvertTo<Worker>();
+
+                worker.UserId = documentSnapshot.Id;
+
+                workers.Add(worker);
+            }
+
+            if (workers.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(workers);
         }
 
         [HttpPut]
-        public async Task<ActionResult> putWorker(string userId,Worker worker)
+        public async Task<ActionResult> PutWorker(string id, WorkerDto workerDto)
         {
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
 
-            if (userId != worker.UserId)
+            DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
+
+            if (documentSnapshot.Exists)
             {
-                return BadRequest();
+                await documentReference.SetAsync(workerDto, SetOptions.MergeAll);
+
+                return NoContent();
             }
+            else
+            {
+                return NotFound();
+            }
+        }
 
-            DocumentReference documentReference = FirestoreManager.Db.Collection("worker").Document(userId);
+        [HttpDelete]
+        public async Task<ActionResult> DeleteWorker(string id)
+        {
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
 
-            await documentReference.SetAsync(worker);
+            DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
 
-            return NoContent();
+            if (documentSnapshot.Exists)
+            {
+                await documentReference.DeleteAsync();
+
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }
