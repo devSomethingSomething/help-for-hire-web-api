@@ -9,11 +9,8 @@ namespace HelpForHireWebApi.Models
 {
     [FirestoreData]
     [Obsolete("Currently not needed")]
-    public class Skill
+    public class SkillDto
     {
-        [Required]
-        public string SkillId { get; set; }
-
         [Required]
         [FirestoreProperty]
         [StringLength(13, MinimumLength = 13)]
