@@ -1,6 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using HelpForHireWebApi.Managers;
 using HelpForHireWebApi.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,18 @@ using System.Threading.Tasks;
 namespace HelpForHireWebApi.Controllers
 {
     [ApiController]
-    [Route("api/controller")]
-    public class RatingController : Controller
+    [Route("api/[controller]")]
+    public class RatingController : ControllerBase
     {
+        private const string COLLECTION = "Rating";
+
         public RatingController()
         {
 
         }
 
         [HttpPost]
-        public async Task<ActionResult<Rating>> PostRating(Rating rating)
+        public async Task<ActionResult<Rating>> PostRating(RatingDto ratingDto)
         {
             if (!ModelState.IsValid)
             {
@@ -27,25 +30,26 @@ namespace HelpForHireWebApi.Controllers
             }
 
             CollectionReference collectionReference = FirestoreManager.Db
-                .Collection("Rating");
+                .Collection(COLLECTION);
 
-            await collectionReference.Document().SetAsync(rating);
+            await collectionReference.Document().SetAsync(ratingDto);
 
-            return CreatedAtAction(nameof(PostRating), rating);
+            return CreatedAtAction(nameof(PostRating), ratingDto);
         }
 
         [HttpGet]
-        public async Task<ActionResult<Rating>> GetRating(int id)
+        public async Task<ActionResult<Rating>> GetRating(string id)
         {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("Rating").Document(id.ToString());
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
 
             DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
 
-            if(documentSnapshot.Exists)
+            if (documentSnapshot.Exists)
             {
                 Rating rating = documentSnapshot.ConvertTo<Rating>();
 
-                rating.Id = id;
+                rating.RatingId = id;
 
                 return Ok(rating);
             }
@@ -55,33 +59,70 @@ namespace HelpForHireWebApi.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<ActionResult> PutRating(string id, Rating rating)
+        [HttpGet("/api/[controller]/all")]
+        public async Task<ActionResult<List<Rating>>> GetRatings()
         {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("Rating").Document(id);
+            List<Rating> ratings = new List<Rating>();
 
-            if(documentReference == null)
+            Query query = FirestoreManager.Db.Collection(COLLECTION);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                Rating rating = documentSnapshot.ConvertTo<Rating>();
+
+                rating.RatingId = documentSnapshot.Id;
+
+                ratings.Add(rating);
+            }
+
+            if (ratings.Count == 0)
             {
                 return NotFound();
             }
 
-            await documentReference.SetAsync(rating, SetOptions.MergeAll);
-            return NoContent();
+            return Ok(ratings);
+        }
 
+        [HttpPut]
+        public async Task<ActionResult> PutRating(string id, RatingDto ratingDto)
+        {
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
+
+            DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
+
+            if (documentSnapshot.Exists)
+            {
+                await documentReference.SetAsync(ratingDto, SetOptions.MergeAll);
+
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult> DeleteRating(string id)
         {
-            DocumentReference documentReference = FirestoreManager.Db.Collection("Rating").Document(id);
+            DocumentReference documentReference = FirestoreManager.Db
+                .Collection(COLLECTION).Document(id);
 
-            if (documentReference == null)
+            DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
+
+            if (documentSnapshot.Exists)
+            {
+                await documentReference.DeleteAsync();
+
+                return NoContent();
+            }
+            else
             {
                 return NotFound();
             }
-
-            await documentReference.DeleteAsync();
-            return NoContent();
         }
     }
 }
