@@ -1,4 +1,5 @@
-﻿using Google.Cloud.Firestore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Google.Cloud.Firestore;
 using HelpForHireWebApi.Managers;
 using HelpForHireWebApi.Models;
 using Microsoft.AspNetCore.Http;
@@ -12,17 +13,17 @@ namespace HelpForHireWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class RatingController : ControllerBase
+    public class ReportController : ControllerBase
     {
-        private const string COLLECTION = "Rating";
+        private const string COLLECTION = "Report";
 
-        public RatingController()
+        public ReportController()
         {
 
         }
 
         [HttpPost]
-        public async Task<ActionResult<RatingDto>> PostRating(RatingDto ratingDto)
+        public async Task<ActionResult<Report>> PostReport(Report report)
         {
             if (!ModelState.IsValid)
             {
@@ -30,15 +31,15 @@ namespace HelpForHireWebApi.Controllers
             }
 
             CollectionReference collectionReference = FirestoreManager.Db
-                .Collection(COLLECTION);
+                    .Collection(COLLECTION);
 
-            await collectionReference.Document().SetAsync(ratingDto);
+            await collectionReference.Document(report.ReportId).SetAsync(report);
 
-            return CreatedAtAction(nameof(PostRating), ratingDto);
+            return CreatedAtAction(nameof(PostReport), report);
         }
 
         [HttpGet]
-        public async Task<ActionResult<RatingDto>> GetRating(string id)
+        public async Task<ActionResult<Report>> GetReport(string id)
         {
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
@@ -47,11 +48,11 @@ namespace HelpForHireWebApi.Controllers
 
             if (documentSnapshot.Exists)
             {
-                RatingDto rating = documentSnapshot.ConvertTo<RatingDto>();
+                Report report = documentSnapshot.ConvertTo<Report>();
 
-                rating.RatingId = id;
+                report.ReportId = id;
 
-                return Ok(rating);
+                return Ok(report);
             }
             else
             {
@@ -60,9 +61,9 @@ namespace HelpForHireWebApi.Controllers
         }
 
         [HttpGet("/api/[controller]/all")]
-        public async Task<ActionResult<List<RatingDto>>> GetRatings()
+        public async Task<ActionResult<List<Report>>> GetReports()
         {
-            List<RatingDto> ratings = new List<RatingDto>();
+            List<Report> reports = new List<Report>();
 
             Query query = FirestoreManager.Db.Collection(COLLECTION);
 
@@ -70,23 +71,23 @@ namespace HelpForHireWebApi.Controllers
 
             foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
             {
-                RatingDto rating = documentSnapshot.ConvertTo<RatingDto>();
+                Report report = documentSnapshot.ConvertTo<Report>();
 
-                rating.RatingId = documentSnapshot.Id;
+                report.ReportId = documentSnapshot.Id;
 
-                ratings.Add(rating);
+                reports.Add(report);
             }
 
-            if (ratings.Count == 0)
+            if (reports.Count == 0)
             {
                 return NotFound();
             }
 
-            return Ok(ratings);
+            return Ok(reports);
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutRating(string id, RatingDto ratingDto)
+        public async Task<ActionResult> PutWorker(string id, WorkerDto workerDto)
         {
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
@@ -95,7 +96,7 @@ namespace HelpForHireWebApi.Controllers
 
             if (documentSnapshot.Exists)
             {
-                await documentReference.SetAsync(ratingDto, SetOptions.MergeAll);
+                await documentReference.SetAsync(workerDto, SetOptions.MergeAll);
 
                 return NoContent();
             }
@@ -105,24 +106,5 @@ namespace HelpForHireWebApi.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> DeleteRating(string id)
-        {
-            DocumentReference documentReference = FirestoreManager.Db
-                .Collection(COLLECTION).Document(id);
-
-            DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
-
-            if (documentSnapshot.Exists)
-            {
-                await documentReference.DeleteAsync();
-
-                return NoContent();
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
     }
 }

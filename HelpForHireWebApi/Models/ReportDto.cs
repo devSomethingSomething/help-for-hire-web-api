@@ -8,29 +8,19 @@ using System.Threading.Tasks;
 namespace HelpForHireWebApi.Models
 {
     [FirestoreData]
-    public class RatingDto
+    public class ReportDto
     {
-        [Required]
-        public string RatingId { get; set; }
-
-        [Required]
+       
+        
         [FirestoreProperty]
-        [Range(1.0, 10.0)]
-        public int Value { get; set; }
-
-        [Required]
+        public string ReportType { get; set; }
+        
         [FirestoreProperty]
         [StringLength(256)]
         public string Description { get; set; }
-
-        [Required]
+        
         [FirestoreProperty]
         [StringLength(13, MinimumLength = 13)]
-        public string EmployerId { get; set; }
-
-        [Required]
-        [FirestoreProperty]
-        [StringLength(13, MinimumLength = 13)]
-        public string WorkerId { get; set; }
+        public User User { get; set; }
     }
 }
