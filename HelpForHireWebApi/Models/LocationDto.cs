@@ -10,11 +10,11 @@ namespace HelpForHireWebApi.Models
     [FirestoreData]
     public class LocationDto
     {
-        [Required]
+       
         [FirestoreProperty]
         public string Province { get; set; }
 
-        [Required]
+      
         [FirestoreProperty]
         public string City { get; set; }
     }
