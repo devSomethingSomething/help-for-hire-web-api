@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace HelpForHireWebApi.Models
 {
     [FirestoreData]
-    public class RatingDto
+    public class Rating
     {
         [Required]
         public string RatingId { get; set; }
