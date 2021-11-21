@@ -22,7 +22,7 @@ namespace HelpForHireWebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RatingDto>> PostRating(RatingDto ratingDto)
+        public async Task<ActionResult<Rating>> PostRating(Rating rating)
         {
             if (!ModelState.IsValid)
             {
@@ -32,13 +32,13 @@ namespace HelpForHireWebApi.Controllers
             CollectionReference collectionReference = FirestoreManager.Db
                 .Collection(COLLECTION);
 
-            await collectionReference.Document().SetAsync(ratingDto);
+            await collectionReference.Document().SetAsync(rating);
 
-            return CreatedAtAction(nameof(PostRating), ratingDto);
+            return CreatedAtAction(nameof(PostRating), rating);
         }
 
         [HttpGet]
-        public async Task<ActionResult<RatingDto>> GetRating(string id)
+        public async Task<ActionResult<Rating>> GetRating(string id)
         {
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
@@ -47,7 +47,7 @@ namespace HelpForHireWebApi.Controllers
 
             if (documentSnapshot.Exists)
             {
-                RatingDto rating = documentSnapshot.ConvertTo<RatingDto>();
+                Rating rating = documentSnapshot.ConvertTo<Rating>();
 
                 rating.RatingId = id;
 
@@ -60,9 +60,9 @@ namespace HelpForHireWebApi.Controllers
         }
 
         [HttpGet("/api/[controller]/all")]
-        public async Task<ActionResult<List<RatingDto>>> GetRatings()
+        public async Task<ActionResult<List<Rating>>> GetRatings()
         {
-            List<RatingDto> ratings = new List<RatingDto>();
+            List<Rating> ratings = new List<Rating>();
 
             Query query = FirestoreManager.Db.Collection(COLLECTION);
 
@@ -70,7 +70,7 @@ namespace HelpForHireWebApi.Controllers
 
             foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
             {
-                RatingDto rating = documentSnapshot.ConvertTo<RatingDto>();
+                Rating rating = documentSnapshot.ConvertTo<Rating>();
 
                 rating.RatingId = documentSnapshot.Id;
 
@@ -86,7 +86,7 @@ namespace HelpForHireWebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutRating(string id, RatingDto ratingDto)
+        public async Task<ActionResult> PutRating(string id, Rating rating)
         {
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
@@ -95,7 +95,7 @@ namespace HelpForHireWebApi.Controllers
 
             if (documentSnapshot.Exists)
             {
-                await documentReference.SetAsync(ratingDto, SetOptions.MergeAll);
+                await documentReference.SetAsync(rating, SetOptions.MergeAll);
 
                 return NoContent();
             }
