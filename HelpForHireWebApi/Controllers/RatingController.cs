@@ -124,32 +124,5 @@ namespace HelpForHireWebApi.Controllers
                 return NotFound();
             }
         }
-
-        //[HttpGet("/api/[controller]/worker")]
-        //public async Task<ActionResult<List<Rating>>> GetRatingsForWorker(string workerId)
-        //{
-        //    List<Rating> ratings = new List<Rating>();
-
-        //    Query query = FirestoreManager.Db.Collection(COLLECTION)
-        //        .WhereEqualTo("WorkerId", workerId);
-
-        //    QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
-
-        //    foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
-        //    {
-        //        Employer employer = documentSnapshot.ConvertTo<Employer>();
-
-        //        employer.UserId = documentSnapshot.Id;
-
-        //        employers.Add(employer);
-        //    }
-
-        //    if (employers.Count == 0)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(employers);
-        //}
     }
 }
