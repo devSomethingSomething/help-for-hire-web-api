@@ -22,7 +22,7 @@ namespace HelpForHireWebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Rating>> PostRating(Rating rating)
+        public async Task<ActionResult<Rating>> PostRating(RatingDto ratingDto)
         {
             if (!ModelState.IsValid)
             {
@@ -32,9 +32,9 @@ namespace HelpForHireWebApi.Controllers
             CollectionReference collectionReference = FirestoreManager.Db
                 .Collection(COLLECTION);
 
-            await collectionReference.Document().SetAsync(rating);
+            await collectionReference.Document().SetAsync(ratingDto);
 
-            return CreatedAtAction(nameof(PostRating), rating);
+            return CreatedAtAction(nameof(PostRating), ratingDto);
         }
 
         [HttpGet]
@@ -86,7 +86,7 @@ namespace HelpForHireWebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutRating(string id, Rating rating)
+        public async Task<ActionResult> PutRating(string id, RatingDto ratingDto)
         {
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
@@ -95,7 +95,7 @@ namespace HelpForHireWebApi.Controllers
 
             if (documentSnapshot.Exists)
             {
-                await documentReference.SetAsync(rating, SetOptions.MergeAll);
+                await documentReference.SetAsync(ratingDto, SetOptions.MergeAll);
 
                 return NoContent();
             }
@@ -124,5 +124,32 @@ namespace HelpForHireWebApi.Controllers
                 return NotFound();
             }
         }
+
+        //[HttpGet("/api/[controller]/worker")]
+        //public async Task<ActionResult<List<Rating>>> GetRatingsForWorker(string workerId)
+        //{
+        //    List<Rating> ratings = new List<Rating>();
+
+        //    Query query = FirestoreManager.Db.Collection(COLLECTION)
+        //        .WhereEqualTo("WorkerId", workerId);
+
+        //    QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+        //    foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+        //    {
+        //        Employer employer = documentSnapshot.ConvertTo<Employer>();
+
+        //        employer.UserId = documentSnapshot.Id;
+
+        //        employers.Add(employer);
+        //    }
+
+        //    if (employers.Count == 0)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(employers);
+        //}
     }
 }

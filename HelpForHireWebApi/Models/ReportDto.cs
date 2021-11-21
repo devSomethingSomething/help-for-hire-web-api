@@ -10,17 +10,16 @@ namespace HelpForHireWebApi.Models
     [FirestoreData]
     public class ReportDto
     {
-       
-        
         [FirestoreProperty]
+        [StringLength(256)]
         public string ReportType { get; set; }
-        
+
         [FirestoreProperty]
         [StringLength(256)]
         public string Description { get; set; }
-        
+
         [FirestoreProperty]
         [StringLength(13, MinimumLength = 13)]
-        public User User { get; set; }
+        public string UserId { get; set; }
     }
 }

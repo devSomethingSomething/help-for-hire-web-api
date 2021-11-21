@@ -10,7 +10,6 @@ namespace HelpForHireWebApi.Models
     [FirestoreData]
     public class JobDto
     {
-        [Required]
         [FirestoreProperty]
         public string Title { get; set; }
     }
