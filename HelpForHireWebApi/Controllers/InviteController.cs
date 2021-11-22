@@ -124,5 +124,59 @@ namespace HelpForHireWebApi.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("/api/[controller]/employer")]
+        public async Task<ActionResult<List<Invite>>> GetInvitesForEmployer(string employerId)
+        {
+            List<Invite> invites = new List<Invite>();
+
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("EmployerId", employerId);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                Invite invite = documentSnapshot.ConvertTo<Invite>();
+
+                invite.InviteId = documentSnapshot.Id;
+
+                invites.Add(invite);
+            }
+
+            if (invites.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(invites);
+        }
+
+        [HttpGet("/api/[controller]/worker")]
+        public async Task<ActionResult<List<Invite>>> GetInvitesForWorker(string workerId)
+        {
+            List<Invite> invites = new List<Invite>();
+
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("WorkerId", workerId);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                Invite invite = documentSnapshot.ConvertTo<Invite>();
+
+                invite.InviteId = documentSnapshot.Id;
+
+                invites.Add(invite);
+            }
+
+            if (invites.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(invites);
+        }
     }
 }
