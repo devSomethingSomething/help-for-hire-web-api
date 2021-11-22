@@ -91,12 +91,14 @@ namespace HelpForHireWebApi.Controllers
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
 
-            if (documentReference == null)
+            Dictionary<string, object> updates = new Dictionary<string, object>
             {
-                return NotFound();
-            }
+                {
+                    "Description", historyDto.Description
+                }
+            };
 
-            await documentReference.SetAsync(historyDto, SetOptions.MergeAll);
+            await documentReference.UpdateAsync(updates);
 
             return NoContent();
         }
