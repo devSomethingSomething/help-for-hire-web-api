@@ -145,5 +145,21 @@ namespace HelpForHireWebApi.Controllers
 
             return Ok(histories);
         }
+
+        [HttpDelete("/api/[controller]/all")]
+        public async Task<ActionResult> DeleteAllHistoryForUser(string userId)
+        {
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("UserId", userId);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                await documentSnapshot.Reference.DeleteAsync();
+            }
+
+            return NoContent();
+        }
     }
 }

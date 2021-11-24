@@ -149,7 +149,7 @@ namespace HelpForHireWebApi.Controllers
                 return 0;
             }
 
-            return ratingsSum / numberOfRatings;
+            return Ok(ratingsSum / numberOfRatings);
         }
     }
 }
