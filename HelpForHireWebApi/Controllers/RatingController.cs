@@ -124,5 +124,32 @@ namespace HelpForHireWebApi.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("/api/[controller]/worker")]
+        public async Task<ActionResult<int>> GetAverageRatingForWorker(string workerId)
+        {
+            int ratingsSum = 0;
+
+            int numberOfRatings = 0;
+
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("WorkerId", workerId);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                ratingsSum += documentSnapshot.ConvertTo<Rating>().Value;
+
+                numberOfRatings++;
+            }
+
+            if (ratingsSum == 0)
+            {
+                return 0;
+            }
+
+            return ratingsSum / numberOfRatings;
+        }
     }
 }
