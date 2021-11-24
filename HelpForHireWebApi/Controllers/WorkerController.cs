@@ -124,5 +124,32 @@ namespace HelpForHireWebApi.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("/api/[controller]/cities")]
+        public async Task<ActionResult<List<Worker>>> GetWorkersInCity(string locationId)
+        {
+            List<Worker> workers = new List<Worker>();
+
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("LocationId", locationId);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                Worker worker = documentSnapshot.ConvertTo<Worker>();
+
+                worker.UserId = documentSnapshot.Id;
+
+                workers.Add(worker);
+            }
+
+            if (workers.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(workers);
+        }
     }
 }
