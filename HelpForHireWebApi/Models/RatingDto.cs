@@ -11,7 +11,7 @@ namespace HelpForHireWebApi.Models
     public class RatingDto
     {
         [FirestoreProperty]
-        [Range(1.0, 10.0)]
+        [Range(1.0, 5.0)]
         public int Value { get; set; }
 
         [FirestoreProperty]

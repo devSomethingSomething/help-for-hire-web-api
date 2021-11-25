@@ -95,6 +95,32 @@ namespace HelpForHireWebApi.Controllers
             return Ok(jobs);
         }
 
+        [HttpGet("/api/[controller]/selected")]
+        public async Task<ActionResult<List<Job>>> GetSelectedJobs(String[] ids)
+        {
+            List<Job> jobs = new List<Job>();
+
+            Query query = FirestoreManager.Db.Collection(COLLECTION).WhereArrayContainsAny("JobId",ids);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            {
+                Job job = documentSnapshot.ConvertTo<Job>();
+
+                job.JobId = documentSnapshot.Id;
+
+                jobs.Add(job);
+            }
+
+            if (jobs.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(jobs);
+        }
+
         [HttpPut]
         public async Task<ActionResult> PutJob(string id, JobDto jobDto)
         {
