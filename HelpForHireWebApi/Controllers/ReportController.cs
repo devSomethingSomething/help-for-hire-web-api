@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Google.Cloud.Firestore;
+﻿using Google.Cloud.Firestore;
 using HelpForHireWebApi.Managers;
 using HelpForHireWebApi.Models;
 using Microsoft.AspNetCore.Http;
@@ -23,41 +22,30 @@ namespace HelpForHireWebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Report>> PostReport(Report report)
+        public async Task<ActionResult<Report>> PostReport(ReportDto reportDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("ReportedUserId", reportDto.ReportedUserId)
+                .WhereEqualTo("ReporterUserId", reportDto.ReporterUserId);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            if (querySnapshot.Documents.Count != 0)
+            {
+                return BadRequest("Duplicate report detected");
+            }
+
             CollectionReference collectionReference = FirestoreManager.Db
-                    .Collection(COLLECTION);
+                .Collection(COLLECTION);
 
-            await collectionReference.Document(report.ReportId).SetAsync(report);
+            await collectionReference.Document().SetAsync(reportDto);
 
-            return CreatedAtAction(nameof(PostReport), report);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<Report>> GetReport(string id)
-        {
-            DocumentReference documentReference = FirestoreManager.Db
-                .Collection(COLLECTION).Document(id);
-
-            DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
-
-            if (documentSnapshot.Exists)
-            {
-                Report report = documentSnapshot.ConvertTo<Report>();
-
-                report.ReportId = id;
-
-                return Ok(report);
-            }
-            else
-            {
-                return NotFound();
-            }
+            return CreatedAtAction(nameof(PostReport), reportDto);
         }
 
         [HttpGet("/api/[controller]/all")]
@@ -86,8 +74,8 @@ namespace HelpForHireWebApi.Controllers
             return Ok(reports);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> PutWorker(string id, WorkerDto workerDto)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteReport(string id)
         {
             DocumentReference documentReference = FirestoreManager.Db
                 .Collection(COLLECTION).Document(id);
@@ -96,7 +84,7 @@ namespace HelpForHireWebApi.Controllers
 
             if (documentSnapshot.Exists)
             {
-                await documentReference.SetAsync(workerDto, SetOptions.MergeAll);
+                await documentReference.DeleteAsync();
 
                 return NoContent();
             }
@@ -105,6 +93,5 @@ namespace HelpForHireWebApi.Controllers
                 return NotFound();
             }
         }
-
     }
 }

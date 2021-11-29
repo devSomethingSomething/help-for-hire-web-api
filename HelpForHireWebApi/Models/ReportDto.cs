@@ -18,8 +18,14 @@ namespace HelpForHireWebApi.Models
         [StringLength(256)]
         public string Description { get; set; }
 
+        [Required]
         [FirestoreProperty]
         [StringLength(13, MinimumLength = 13)]
-        public string UserId { get; set; }
+        public string ReportedUserId { get; set; }
+
+        [Required]
+        [FirestoreProperty]
+        [StringLength(13, MinimumLength = 13)]
+        public string ReporterUserId { get; set; }
     }
 }
