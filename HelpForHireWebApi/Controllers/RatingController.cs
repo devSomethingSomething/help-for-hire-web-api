@@ -29,6 +29,17 @@ namespace HelpForHireWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("EmployerId", ratingDto.EmployerId)
+                .WhereEqualTo("WorkerId", ratingDto.WorkerId);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            if (querySnapshot.Documents.Count != 0)
+            {
+                return BadRequest("Duplicate rating detected");
+            }
+
             CollectionReference collectionReference = FirestoreManager.Db
                 .Collection(COLLECTION);
 
