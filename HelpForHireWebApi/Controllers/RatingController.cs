@@ -157,7 +157,7 @@ namespace HelpForHireWebApi.Controllers
 
             if (ratingsSum == 0)
             {
-                return 0;
+                return 1;
             }
 
             return Ok(ratingsSum / numberOfRatings);
