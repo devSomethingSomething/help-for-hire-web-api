@@ -29,6 +29,17 @@ namespace HelpForHireWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
+            Query query = FirestoreManager.Db.Collection(COLLECTION)
+                .WhereEqualTo("EmployerId", inviteDto.EmployerId)
+                .WhereEqualTo("WorkerId", inviteDto.WorkerId);
+
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            if (querySnapshot.Documents.Count != 0)
+            {
+                return BadRequest("Duplicate invite detected");
+            }
+
             CollectionReference collectionReference = FirestoreManager.Db
                 .Collection(COLLECTION);
 
