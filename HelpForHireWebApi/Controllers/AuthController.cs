@@ -18,6 +18,23 @@ namespace HelpForHireWebApi.Controllers
 
         }
 
+        [HttpPut]
+        public async Task<ActionResult> PutAuth(string email, string password)
+        {
+            UserRecord userRecord = await FirestoreManager.Auth.GetUserByEmailAsync(email);
+
+            UserRecordArgs userRecordArgs = new UserRecordArgs()
+            {
+                Uid = userRecord.Uid,
+                Email = email,
+                Password = password,
+            };
+
+            await FirestoreManager.Auth.UpdateUserAsync(userRecordArgs);
+
+            return NoContent();
+        }
+
         [HttpDelete]
         public async Task<ActionResult> DeleteAuth(string email)
         {
