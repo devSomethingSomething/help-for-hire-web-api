@@ -10,14 +10,17 @@ namespace HelpForHireWebApi.Models
     [FirestoreData]
     public class Employer : User
     {
+        [Required]
         [FirestoreProperty]
         [StringLength(256)]
         public string CompanyName { get; set; }
 
+        [Required]
         [FirestoreProperty]
         [StringLength(256)]
         public string Address { get; set; }
 
+        [Required]
         [FirestoreProperty]
         [StringLength(256)]
         public string Suburb { get; set; }
