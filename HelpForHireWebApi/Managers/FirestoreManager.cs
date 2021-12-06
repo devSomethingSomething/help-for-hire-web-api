@@ -18,15 +18,15 @@ namespace HelpForHireWebApi.Managers
 
         public static FirebaseAuth Auth { get; set; }
 
-        private const string PROJECT_ID = "help-for-hire";
+        private const string PROJECT_ID = "help-for-hire-15900";
 
         static FirestoreManager()
         {
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS",
                 Path.Combine(
                     Environment.CurrentDirectory, 
-                    "Keys/", 
-                    "help-for-hire-firebase-adminsdk-ejiad-ad5b9459ba.json"));
+                    "Keys/",
+                    "help-for-hire-15900-firebase-adminsdk-25esz-8fb192027b.json"));
 
             Db = FirestoreDb.Create(PROJECT_ID);
 
