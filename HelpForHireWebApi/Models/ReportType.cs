@@ -5,6 +5,12 @@ using System.Threading.Tasks;
 
 namespace HelpForHireWebApi.Models
 {
+    /// <summary>
+    /// This enum was supposed to hold report
+    /// types but those were instead moved to
+    /// the Flutter application
+    /// </summary>
+    [Obsolete("Currently not needed")]
     public enum ReportType
     {
         ReportType1,
