@@ -15,8 +15,15 @@ using System.Threading.Tasks;
 
 namespace HelpForHireWebApi
 {
+    /// <summary>
+    /// Allows for configuration of the web API
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Non-default constructor
+        /// </summary>
+        /// <param name="configuration">Takes in configuration settings</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,6 +36,7 @@ namespace HelpForHireWebApi
         {
 
             services.AddControllers();
+            // Add swagger generation to the project
             services.AddSwaggerGen(c =>
             {
                 c.CustomSchemaIds(t => t.FullName);
@@ -39,6 +47,7 @@ namespace HelpForHireWebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Use developer pages in debug mode
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -57,6 +66,7 @@ namespace HelpForHireWebApi
 
             app.UseAuthorization();
 
+            // Map controller actions as endpoints
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
