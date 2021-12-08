@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="HelpForHireWebApi.Program">
+    <Position X="5.5" Y="0.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Startup">
+    <Position X="0.5" Y="2.75" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAACAAAAAA=</HashCode>
+      <FileName>Startup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Controllers.AuthController">
+    <Position X="0.5" Y="0.75" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Controllers\AuthController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Controllers.EmployerController">
+    <Position X="5.5" Y="2.75" Width="5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAEAAEAAAAACAAAAAAAAAAAAAAAAAEAAEAAAAAA=</HashCode>
+      <FileName>Controllers\EmployerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Controllers.HistoryController">
+    <Position X="11.75" Y="2.75" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAgIAgAAAAAAEAABAQABAA=</HashCode>
+      <FileName>Controllers\HistoryController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Controllers.InviteController">
+    <Position X="5.5" Y="6" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAgAAAAAAAAAAAAAAAAAABAAAAgAEAAABAAQAA=</HashCode>
+      <FileName>Controllers\InviteController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Controllers.JobController">
+    <Position X="0.5" Y="6" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAQAAAAAAAgAQAAgAAAIAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Controllers\JobController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Controllers.LocationController">
+    <Position X="11.25" Y="6" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAACAAAEABAAAACAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Controllers\LocationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Controllers.RatingController">
+    <Position X="0.5" Y="9.25" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAABACAABAAAAAAAAAAAAAAAAACAAAiEAAAAAAAAA=</HashCode>
+      <FileName>Controllers\RatingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Controllers.ReportController">
+    <Position X="5.5" Y="9.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAEAAAAAAAAAAAABAEAAAAAAAAA=</HashCode>
+      <FileName>Controllers\ReportController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Controllers.WorkerController">
+    <Position X="10" Y="9.25" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAACAAAAAAAAAgAAAAAAAAAAAAAAAMABAAACIAA=</HashCode>
+      <FileName>Controllers\WorkerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Managers.FirestoreManager">
+    <Position X="0.5" Y="12.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAEAAAAAABAgAAA=</HashCode>
+      <FileName>Managers\FirestoreManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.Employer">
+    <Position X="21.75" Y="9.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAgAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Employer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.EmployerDto">
+    <Position X="21.75" Y="5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAgAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\EmployerDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.History">
+    <Position X="27" Y="10.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAgAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\History.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.HistoryDto">
+    <Position X="29.5" Y="10.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\HistoryDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.Invite">
+    <Position X="29.75" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAkAAAAAAAAAAQAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Models\Invite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.InviteDto">
+    <Position X="32.25" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAQAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Models\InviteDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.Job">
+    <Position X="25.25" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Job.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.JobDto">
+    <Position X="27.5" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\JobDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.Location">
+    <Position X="30.25" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Models\Location.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.LocationDto">
+    <Position X="32.75" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Models\LocationDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.Rating">
+    <Position X="25.25" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAoAAAAAAQAAAAAAAAAAAAAAAAgAgAAAAA=</HashCode>
+      <FileName>Models\Rating.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.RatingDto">
+    <Position X="27.75" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAQAAAAAAAAAAAAAAAAgAgAAAAA=</HashCode>
+      <FileName>Models\RatingDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.Report">
+    <Position X="29.75" Y="8" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgEAAAAAAAAAAAAAAAAAAAAAAAAAMAAAQ=</HashCode>
+      <FileName>Models\Report.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.ReportDto">
+    <Position X="32.5" Y="8" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgEAAAAAAAAAAAAAAAAAAAAAAAAAEAAAQ=</HashCode>
+      <FileName>Models\ReportDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.Skill">
+    <Position X="25.25" Y="8" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAgAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Skill.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.SkillDto">
+    <Position X="27.5" Y="8" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SkillDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.User">
+    <Position X="19.25" Y="7.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAQAwABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.UserDto">
+    <Position X="19.25" Y="2.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAQAQABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\UserDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.Worker">
+    <Position X="16.75" Y="9.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAgAAAAAAAAAAAAIACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Worker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpForHireWebApi.Models.WorkerDto">
+    <Position X="16.75" Y="5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAgAAAAAAAAAAAAIACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\WorkerDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="HelpForHireWebApi.Models.ReportType">
+    <Position X="25.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAEAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ReportType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
