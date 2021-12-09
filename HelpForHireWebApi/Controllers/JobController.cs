@@ -139,21 +139,19 @@ namespace HelpForHireWebApi.Controllers
         /// <param name="jobIds">The list of jobs we want to retrieve</param>
         /// <returns>A list of jobs otherwise a not found result</returns>
         [HttpGet("/api/[controller]/selected")]
-        public async Task<ActionResult<List<Job>>> GetSelectedJobs(string[] jobIds)
+        public async Task<ActionResult<List<Job>>> GetSelectedJobs([FromQuery]string[] jobIds)
         {
             // List of jobs to return
             List<Job> jobs = new List<Job>();
 
-            // Get a list of jobs based off of the IDs provided to the method
-            Query query = FirestoreManager.Db.Collection(COLLECTION)
-                .WhereArrayContainsAny("JobId", jobIds);
-
-            // Get a snapshot of the query
-            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
-
-            // For any found jobs, add them to the results list
-            foreach (DocumentSnapshot documentSnapshot in querySnapshot.Documents)
+            // For each job id retrieve the job document and convert it to a job before adding it to the
+            // results list
+            foreach (var jobId in jobIds)
             {
+                DocumentReference documentReference = FirestoreManager.Db.Collection(COLLECTION).Document(jobId);
+
+                DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
+
                 Job job = documentSnapshot.ConvertTo<Job>();
 
                 job.JobId = documentSnapshot.Id;
